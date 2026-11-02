@@ -18,6 +18,8 @@ class Hand {
     void split(Hand &h2) {
         h2.add_card(cards[1]);
         remove_last_card();
+        sum();
+        h2.sum();
     }
 
   private:
