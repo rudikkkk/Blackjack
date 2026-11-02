@@ -3,13 +3,30 @@
 #include <iostream>
 #include <string>
 
-struct Card {
-    int value{0};
-    std::string name{""};
-    char suit{' '};
-    bool is_ace = false;
+enum class Suit { Clubs, Diamonds, Hearts, Spades };
 
-    explicit Card(const std::string &str);
+enum class Rank : int {
+    Two = 2,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+    Ten,
+    Jack,
+    Queen,
+    King,
+    Ace
 };
 
-std::ostream &operator<<(std::ostream &os, const Card &c);
+struct Card {
+    Rank rank{Rank::Two};
+    Suit suit{Suit::Clubs};
+    int value{2};
+
+    explicit Card(Rank &r, Suit &s);
+
+    bool is_ace() const { return rank == Rank::Ace; }
+};

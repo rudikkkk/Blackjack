@@ -5,18 +5,22 @@
 #include <string>
 #include <vector>
 
+Deck::Deck() : rng(std::random_device{}()) { reset(); }
+
 void Deck::shuffle() {
-    std::shuffle(cards.begin(), cards.end(), g);
+    std::shuffle(cards.begin(), cards.end(), rng);
     return;
 }
 
 void Deck::reset() {
     cards = {};
-    const char *ranks[] = {"2", "3",  "4", "5", "6", "7", "8",
-                           "9", "10", "J", "Q", "K", "A"};
-    for (auto r : ranks)
-        for (char c : {'h', 'c', 'd', 's'})
-            cards.emplace_back(std::string(r) + c);
+
+    for (int rank{2}; rank <= 14; ++rank)
+        for (int suit{0}; suit < 4; ++suit)
+            cards.emplace_back(static_cast<Rank>(rank),
+                               static_cast<Suit>(suit));
+
+    shuffle();
 }
 
 Card Deck::get_card() {

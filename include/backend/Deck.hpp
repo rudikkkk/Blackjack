@@ -1,23 +1,19 @@
 #pragma once
 
 #include "Card.hpp"
+#include <random>
 #include <vector>
 
-std::random_device rd;
-std::mt19937 g(rd());
-
 class Deck {
-  private:
+    std::mt19937 rng;
     std::vector<Card> cards;
 
-  public:
-    Deck() { reset(); };
-
     void shuffle() {};
+
+  public:
+    Deck();
 
     void reset() {};
 
     Card get_card() {};
-
-    Card operator[](int i) { return cards[i]; }
 };
