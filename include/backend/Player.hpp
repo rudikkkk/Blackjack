@@ -1,10 +1,10 @@
-#include "Card.hpp"
+#pragma once
+
 #include "Hand.hpp"
-#include <vector>
 
 struct Player {
     Hand hand;
-    int balance{0};
+    int balance{1000};
     int bet{0};
-    bool can_bet(const int &amount) { return balance >= amount; }
+    bool can_bet(unsigned int amount) { return balance >= amount; }
 };

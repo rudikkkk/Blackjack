@@ -4,16 +4,16 @@
 #include <random>
 #include <vector>
 
+constexpr int n_decks = 2;
+
 class Deck {
     std::mt19937 rng;
     std::vector<Card> cards;
 
-    void shuffle() {};
-
   public:
-    Deck();
+    void shuffle();
 
-    void reset() {};
+    void reset();
 
-    Card get_card() {};
+    Card get_card();
 };

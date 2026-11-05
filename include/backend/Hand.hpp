@@ -5,17 +5,23 @@
 
 class Hand {
     std::vector<Card> cards{};
-
-    void count_total() {}
-
-  public:
     int total{0};
 
-    void add(Card card) {}
+    void count_total();
+
+  public:
+    void add(Card &card);
 
     const std::vector<Card> &get_cards() const { return cards; }
 
-    bool is_blackjack() { return cards.size() == 2 && total == 21; }
+    int get_total() const { return total; }
 
-    bool is_bust() { return total > 21; }
+    bool is_blackjack() const { return cards.size() == 2 && total == 21; }
+
+    bool is_bust() const { return total > 21; }
+
+    void clear() {
+        cards.clear();
+        total = 0;
+    }
 };
