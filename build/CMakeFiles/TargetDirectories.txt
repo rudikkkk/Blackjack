@@ -1,3 +1,0 @@
-/home/rudik/Coding/Cpp/Blackjack/build/CMakeFiles/blackjack_backend.dir
-/home/rudik/Coding/Cpp/Blackjack/build/CMakeFiles/edit_cache.dir
-/home/rudik/Coding/Cpp/Blackjack/build/CMakeFiles/rebuild_cache.dir
