@@ -10,8 +10,10 @@ class Deck {
     std::mt19937 rng;
     std::vector<Card> cards;
 
-  public:
     void shuffle();
+
+  public:
+    Deck();
 
     void reset();
 

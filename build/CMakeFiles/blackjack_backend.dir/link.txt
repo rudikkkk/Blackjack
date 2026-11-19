@@ -1,0 +1,2 @@
+/usr/bin/ar qc libblackjack_backend.a CMakeFiles/blackjack_backend.dir/src/backend/deck.cpp.o CMakeFiles/blackjack_backend.dir/src/backend/hand.cpp.o CMakeFiles/blackjack_backend.dir/src/backend/game.cpp.o
+/usr/bin/ranlib libblackjack_backend.a

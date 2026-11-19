@@ -1,0 +1,61 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : [],
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-c0864588125d49672f2a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "blackjack",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "blackjack_backend::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-blackjack_backend-Debug-1d420d38e72e3b023050.json",
+					"name" : "blackjack_backend",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/rudik/Coding/Cpp/Blackjack/build",
+		"source" : "/home/rudik/Coding/Cpp/Blackjack"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 12
+	}
+}
