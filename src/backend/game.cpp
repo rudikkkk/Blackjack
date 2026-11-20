@@ -7,56 +7,56 @@
 namespace backend {
 
 GameData Game::get_game_data() {
-    return GameData{current_player, dealer, state, players};
+    return GameData{current_player_, dealer_, state_, players_};
 }
 
 GameData Game::start(std::size_t player_count) {
     if (player_count == 0) {
         return error(GameError::NoPlayers);
     }
-    dealer.clear();
-    deck.reset();
-    players.clear();
-    players.assign(player_count, Player{});
-    current_player = 0;
-    state = States::Betting;
+    dealer_.clear();
+    deck_.reset();
+    players_.clear();
+    players_.assign(player_count, Player{});
+    current_player_ = 0;
+    state_ = States::Betting;
     return get_game_data();
 }
 
 void Game::deal_the_cards() {
-    dealer.add(deck.get_card());
-    Card card = deck.get_card();
-    card.is_face_down = true;
-    dealer.add(card);
-    for (auto &player : players) {
+    dealer_.add(deck_.get_card());
+    Card card = deck_.get_card();
+    card.is_face_down_ = true;
+    dealer_.add(card);
+    for (auto &player : players_) {
         for (int i{0}; i < 2; ++i) {
-            player.add(deck.get_card());
+            player.add(deck_.get_card());
         }
     }
 }
 
 GameData Game::next_step() {
-    switch (state) {
+    switch (state_) {
     case States::Betting:
-        if (current_player < players.size() - 1) {
-            ++current_player;
+        if (current_player_ < players_.size() - 1) {
+            ++current_player_;
         } else {
-            current_player = 0;
-            state = States::PlayersTurns;
+            current_player_ = 0;
+            state_ = States::PlayersTurns;
             deal_the_cards();
         }
         return get_game_data();
     case States::PlayersTurns:
-        if (current_player < players.size() - 1) {
-            ++current_player;
+        if (current_player_ < players_.size() - 1) {
+            ++current_player_;
             return get_game_data();
         } else {
-            current_player = 0;
-            state = States::DealerTurn;
+            current_player_ = 0;
+            state_ = States::DealerTurn;
             return dealer_turn();
         }
     case States::DealerTurn:
-        state = States::End;
+        state_ = States::End;
         count_results();
         return get_game_data();
     default:
@@ -65,90 +65,90 @@ GameData Game::next_step() {
 }
 
 GameData Game::do_bet(int amount) {
-    if (state != States::Betting) {
+    if (state_ != States::Betting) {
         return error(GameError::WrongState);
     }
-    Player &player = players[current_player];
+    Player &player = players_[current_player_];
 
-    if (player.bet < MIN_BET) {
+    if (player.bet_ < MIN_BET) {
         return error(GameError::BetOutOfRange);
     }
 
     if (player.can_bet(amount)) {
         return error(GameError::NotEnoughMoney);
     }
-    player.bet = amount;
-    player.balance -= amount;
+    player.bet_ = amount;
+    player.balance_ -= amount;
     return next_step();
 }
 
 GameData Game::hit() {
-    if (state != States::PlayersTurns) {
+    if (state_ != States::PlayersTurns) {
         return error(GameError::WrongState);
     }
-    Player &player = players[current_player];
+    Player &player = players_[current_player_];
     if (!player.can_hit()) {
         if (player.is_blackjack()) {
-            player.state = PlayerStates::Blackjack;
+            player.state_ = PlayerStates::Blackjack;
         } else {
-            player.state = PlayerStates::Lose;
+            player.state_ = PlayerStates::Lose;
         }
         return next_step();
     }
-    Card card = deck.get_card();
+    Card card = deck_.get_card();
     player.add(card);
     return get_game_data();
 }
 
 GameData Game::stand() {
-    if (state != States::PlayersTurns) {
+    if (state_ != States::PlayersTurns) {
         return error(GameError::WrongState);
     }
     return next_step();
 }
 
 GameData Game::dealer_turn() {
-    auto cards = dealer.get_cards();
-    cards[1].is_face_down = false;
-    dealer.clear();
-    dealer.add(cards[0]);
-    dealer.add(cards[1]);
+    auto cards = dealer_.get_cards();
+    cards[1].is_face_down_ = false;
+    dealer_.clear();
+    dealer_.add(cards[0]);
+    dealer_.add(cards[1]);
 
     bool all_players_bust = true;
     int max_player_total = 0;
-    for (auto player : players) {
+    for (auto player : players_) {
         if (!player.is_bust()) {
             all_players_bust = false;
             max_player_total = std::max(max_player_total, player.get_total());
         }
     }
 
-    while (!all_players_bust && dealer.get_total() < DEALER_STAND_TOTAL &&
-           dealer.get_total() < max_player_total) {
-        Card card = deck.get_card();
-        dealer.add(card);
+    while (!all_players_bust && dealer_.get_total() < DEALER_STAND_TOTAL &&
+           dealer_.get_total() < max_player_total) {
+        Card card = deck_.get_card();
+        dealer_.add(card);
     }
     return next_step();
 }
 
 void Game::count_results() {
-    for (auto &player : players) {
-        switch (player.state) {
+    for (auto &p : players_) {
+        switch (p.state_) {
         case PlayerStates::Blackjack:
-            player.state = dealer.is_blackjack() ? PlayerStates::Draw
-                                                 : PlayerStates::Blackjack;
+            p.state_ = dealer_.is_blackjack() ? PlayerStates::Draw
+                                              : PlayerStates::Blackjack;
             break;
 
         case PlayerStates::None:
-            if (dealer.is_blackjack()) {
-                player.state = PlayerStates::Lose;
-            } else if (dealer.is_bust() ||
-                       dealer.get_total() < player.get_total()) {
-                player.state = PlayerStates::Win;
-            } else if (player.get_total() == dealer.get_total()) {
-                player.state = PlayerStates::Draw;
+            if (dealer_.is_blackjack()) {
+                p.state_ = PlayerStates::Lose;
+            } else if (dealer_.is_bust() ||
+                       dealer_.get_total() < p.get_total()) {
+                p.state_ = PlayerStates::Win;
+            } else if (p.get_total() == dealer_.get_total()) {
+                p.state_ = PlayerStates::Draw;
             } else {
-                player.state = PlayerStates::Lose;
+                p.state_ = PlayerStates::Lose;
             }
             break;
 
@@ -156,35 +156,35 @@ void Game::count_results() {
             break;
         }
 
-        switch (player.state) {
+        switch (p.state_) {
         case PlayerStates::Blackjack:
-            player.balance += static_cast<int>(2.5 * player.bet);
+            p.balance_ += static_cast<int>(2.5 * p.bet_);
             break;
         case PlayerStates::Win:
-            player.balance += 2 * player.bet;
+            p.balance_ += 2 * p.bet_;
             break;
         case PlayerStates::Draw:
-            player.balance += player.bet;
+            p.balance_ += p.bet_;
             break;
         default:
             break;
         }
-        player.bet = 0;
+        p.bet_ = 0;
     }
 }
 
 GameData Game::next_round() {
-    if (state != States::End) {
+    if (state_ != States::End) {
         return get_game_data();
     }
-    dealer.clear();
-    for (auto &p : players) {
+    dealer_.clear();
+    for (auto &p : players_) {
         p.clear();
-        p.bet = 0;
-        p.state = PlayerStates::None;
+        p.bet_ = 0;
+        p.state_ = PlayerStates::None;
     }
-    current_player = 0;
-    state = States::Betting;
+    current_player_ = 0;
+    state_ = States::Betting;
     return get_game_data();
 }
 

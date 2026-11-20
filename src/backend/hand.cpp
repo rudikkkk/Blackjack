@@ -4,15 +4,15 @@
 namespace backend {
 
 void Hand::add(const Card &card) {
-    cards.push_back(card);
+    cards_.push_back(card);
     count_total();
 }
 
 void Hand::count_total() {
     int aces{0};
     int res{0};
-    for (const Card &c : cards) {
-        if (!c.is_face_down) {
+    for (const Card &c : cards_) {
+        if (!c.is_face_down_) {
             res += c.value();
             if (c.is_ace()) {
                 ++aces;
@@ -23,7 +23,7 @@ void Hand::count_total() {
         res -= 10;
         --aces;
     }
-    total = res;
+    total_ = res;
 }
 
 } // namespace backend

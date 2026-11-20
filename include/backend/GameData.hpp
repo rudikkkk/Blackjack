@@ -9,43 +9,43 @@
 namespace backend {
 
 struct CardData {
-    Rank rank{};
-    Suit suit{};
-    bool is_face_down{false};
+    Rank rank_{};
+    Suit suit_{};
+    bool is_face_down_{false};
 
     CardData(const Card &c)
-        : rank{c.rank}, suit{c.suit}, is_face_down{c.is_face_down} {}
+        : rank_{c.rank_}, suit_{c.suit_}, is_face_down_{c.is_face_down_} {}
 };
 
 struct HandData {
-    std::vector<CardData> cards;
-    int total{0};
-    bool is_blackjack{false};
+    std::vector<CardData> cards_;
+    int total_{0};
+    bool is_blackjack_{false};
     bool is_bust{false};
 
     HandData(const Hand &hand) {
         for (const auto card : hand.get_cards())
-            cards.emplace_back(card);
-        total = hand.get_total();
-        is_blackjack = hand.is_blackjack();
+            cards_.emplace_back(card);
+        total_ = hand.get_total();
+        is_blackjack_ = hand.is_blackjack();
         is_bust = hand.is_bust();
     }
 };
 
 struct DealerData {
-    HandData hand;
+    HandData hand_;
 
-    DealerData(const Hand &d) : hand{d} {}
+    DealerData(const Hand &d) : hand_{d} {}
 };
 
 struct PlayerData {
-    HandData hand; // при добавлении сплита: std::vector<HandData> hands
-    int balance{0};
-    int bet{0};
+    HandData hand_; // при добавлении сплита: std::vector<HandData> hands
+    int balance_{0};
+    int bet_{0};
     PlayerStates state{PlayerStates::None};
 
     PlayerData(const Player &p)
-        : hand{p}, balance{p.balance}, bet{p.bet}, state{p.state} {}
+        : hand_{p}, balance_{p.balance_}, bet_{p.bet_}, state{p.state_} {}
 };
 
 // На будущее
@@ -57,18 +57,18 @@ struct PlayerData {
 // };
 
 struct GameData {
-    States state{States::Menu};
-    std::size_t current_player{0};
-    DealerData dealer;
-    std::vector<PlayerData> players;
-    GameError error{GameError::None};
+    States state_{States::Menu};
+    std::size_t current_player_{0};
+    DealerData dealer_;
+    std::vector<PlayerData> players_;
+    GameError error_{GameError::None};
 
     GameData(std::size_t c_p, const Hand &d, States s,
-             const std::vector<Player> &p)
-        : state{s}, current_player{c_p}, dealer{d} {
-        players.clear();
-        for (const auto &player : p) {
-            players.emplace_back(player);
+             const std::vector<Player> &players)
+        : state_{s}, current_player_{c_p}, dealer_{d} {
+        players_.clear();
+        for (const auto &p : players) {
+            players_.emplace_back(p);
         }
     }
 };
