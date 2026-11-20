@@ -4,7 +4,7 @@
 #include <random>
 #include <vector>
 
-constexpr int n_decks = 2;
+namespace backend {
 
 class Deck {
     std::mt19937 rng;
@@ -19,3 +19,5 @@ class Deck {
 
     Card get_card();
 };
+
+} // namespace backend

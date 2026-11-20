@@ -4,6 +4,8 @@
 #include "constants.hpp"
 #include <vector>
 
+namespace backend {
+
 class Hand {
     std::vector<Card> cards{};
     int total{0};
@@ -21,10 +23,12 @@ class Hand {
         return cards.size() == 2 && total == TOTAL_FOR_BLACKJACK;
     }
 
-    bool is_bust() const { return total > 21; }
+    bool is_bust() const { return total > TOTAL_FOR_BLACKJACK; }
 
     void clear() {
         cards.clear();
         total = 0;
     }
 };
+
+} // namespace backend

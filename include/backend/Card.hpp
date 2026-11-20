@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+namespace backend {
+
 enum class Suit { Clubs, Diamonds, Hearts, Spades };
 
 enum class Rank : int {
@@ -33,3 +35,5 @@ struct Card {
         return is_ace() ? 11 : std::min(10, static_cast<int>(rank));
     }
 };
+
+} // namespace backend

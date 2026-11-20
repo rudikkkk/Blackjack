@@ -1,5 +1,7 @@
 #pragma once
 
+namespace backend {
+
 enum class States { Menu, Betting, PlayersTurns, DealerTurn, End };
 enum class PlayerStates { None = -1, Lose, Draw, Win, Blackjack };
 enum class GameError {
@@ -7,5 +9,7 @@ enum class GameError {
     WrongState,
     NoPlayers,
     NotEnoughMoney,
-    BetOutOfRange,
+    BetOutOfRange
 };
+
+} // namespace backend

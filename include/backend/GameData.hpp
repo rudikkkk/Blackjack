@@ -6,6 +6,8 @@
 
 #include <vector>
 
+namespace backend {
+
 struct CardData {
     Rank rank{};
     Suit suit{};
@@ -24,6 +26,9 @@ struct HandData {
     HandData(const Hand &hand) {
         for (const auto card : hand.get_cards())
             cards.emplace_back(card);
+        total = hand.get_total();
+        is_blackjack = hand.is_blackjack();
+        is_bust = hand.is_bust();
     }
 };
 
@@ -34,7 +39,7 @@ struct DealerData {
 };
 
 struct PlayerData {
-    HandData hand; // на этапе сплита: std::vector<HandData> hands
+    HandData hand; // при добавлении сплита: std::vector<HandData> hands
     int balance{0};
     int bet{0};
     PlayerStates state{PlayerStates::None};
@@ -43,18 +48,20 @@ struct PlayerData {
         : hand{p}, balance{p.balance}, bet{p.bet}, state{p.state} {}
 };
 
-struct AllowedActions {
-    bool bet{false};
-    bool hit{false};
-    bool stand{false};
-    bool next_round{false};
-};
+// На будущее
+// struct AllowedActions {
+//     bool bet{false};
+//     bool hit{false};
+//     bool stand{false};
+//     bool next_round{false};
+// };
 
 struct GameData {
     States state{States::Menu};
     std::size_t current_player{0};
     DealerData dealer;
     std::vector<PlayerData> players;
+    GameError error{GameError::None};
 
     GameData(std::size_t c_p, const Hand &d, States s,
              const std::vector<Player> &p)
@@ -65,3 +72,5 @@ struct GameData {
         }
     }
 };
+
+} // namespace backend

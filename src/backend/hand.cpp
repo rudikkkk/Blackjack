@@ -1,6 +1,8 @@
 #include "Hand.hpp"
 #include "Card.hpp"
 
+namespace backend {
+
 void Hand::add(const Card &card) {
     cards.push_back(card);
     count_total();
@@ -23,3 +25,5 @@ void Hand::count_total() {
     }
     total = res;
 }
+
+} // namespace backend

@@ -3,8 +3,10 @@
 #include "Hand.hpp"
 #include "types.hpp"
 
+namespace backend {
+
 struct Player : Hand {
-    int balance{1000};
+    int balance{START_BALANCE};
     int bet{0};
     PlayerStates state = PlayerStates::None;
     bool can_bet(unsigned int amount) {
@@ -12,3 +14,5 @@ struct Player : Hand {
     }
     bool can_hit() { return (!is_bust() && !is_blackjack()); }
 };
+
+} // namespace backend
