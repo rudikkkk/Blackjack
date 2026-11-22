@@ -25,7 +25,7 @@ class Game {
 
     GameData get_game_data();
 
-    GameData Game::error(GameError e) {
+    GameData error(GameError e) {
         GameData data = get_game_data();
         data.error_ = e;
         return data;
