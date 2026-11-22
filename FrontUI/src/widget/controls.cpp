@@ -6,7 +6,7 @@
 #include <FL/Fl_JPEG_Image.H>
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_RGB_Image.H>
-#include <FL/Fl_draw.H>
+#include <FL/fl_draw.H>
 #include <algorithm>
 #include <front/widget/controls.hpp>
 #include <memory>
