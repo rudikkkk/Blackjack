@@ -7,8 +7,8 @@
 namespace backend {
 
 class Deck {
-    std::mt19937 rng;
-    std::vector<Card> cards;
+    std::mt19937 rng_;
+    std::vector<Card> cards_;
 
     void shuffle();
 

@@ -23,16 +23,16 @@ enum class Rank : int {
 };
 
 struct Card {
-    Rank rank{Rank::Two};
-    Suit suit{Suit::Clubs};
-    bool is_face_down{false};
+    Rank rank_{Rank::Two};
+    Suit suit_{Suit::Clubs};
+    bool is_face_down_{false};
 
-    Card(Rank r, Suit s) : rank{r}, suit{s} {}
+    Card(Rank r, Suit s) : rank_{r}, suit_{s} {}
 
-    bool is_ace() const { return rank == Rank::Ace; }
+    bool is_ace() const { return rank_ == Rank::Ace; }
 
     int value() const {
-        return is_ace() ? 11 : std::min(10, static_cast<int>(rank));
+        return is_ace() ? 11 : std::min(10, static_cast<int>(rank_));
     }
 };
 

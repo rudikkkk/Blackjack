@@ -9,11 +9,11 @@
 namespace backend {
 
 class Game {
-    std::size_t current_player{0};
-    Hand dealer{};
-    Deck deck{};
-    std::vector<Player> players{};
-    States state = States::Menu;
+    std::size_t current_player_{0};
+    Hand dealer_{};
+    Deck deck_{};
+    std::vector<Player> players_{};
+    States state_ = States::Menu;
 
     GameData next_step();
 
@@ -27,7 +27,7 @@ class Game {
 
     GameData Game::error(GameError e) {
         GameData data = get_game_data();
-        data.error = e;
+        data.error_ = e;
         return data;
     }
 
