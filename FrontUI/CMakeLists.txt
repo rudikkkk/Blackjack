@@ -14,6 +14,7 @@ add_library(frontui
     src/layout/layout.cpp
     src/window/window.cpp
     src/animation/animation.cpp
+    src/resource/resource.cpp
 )
 add_library(FrontUI::frontui ALIAS frontui)
 target_include_directories(frontui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

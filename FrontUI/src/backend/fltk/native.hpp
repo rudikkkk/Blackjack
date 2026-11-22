@@ -4,6 +4,7 @@
 #include <FL/Fl_Window.H>
 
 namespace front::detail {
+
 inline Fl_Widget *widget(void *p) noexcept {
     return static_cast<Fl_Widget *>(p);
 }

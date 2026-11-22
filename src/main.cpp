@@ -1,8 +1,8 @@
 #include <front/front.hpp>
-#include <memory>
 
 int main() {
-    front::Window window(640, 420, "Front UI - basic example");
+    front::ResourceManager::set_resource_directory(ASSETS_DIR);
+    front::Window window(640, 420, "BlackJack");
     auto &root = window.root();
     root.set_layout(std::make_unique<front::VerticalLayout>(12, 18));
 
@@ -14,8 +14,9 @@ int main() {
     auto &button = root.create<front::Button>("Click", front::Size{200, 40});
     button.set_on_click([&status] { status.set_text("Button clicked!"); });
 
-    auto &logo = root.create<front::Image>(front::Size{300, 300});
-    logo.load("assets/sample.jpeg"); // Optional image file
+    auto &logo = root.create<front::Image>(front::Size{300, 200});
+    logo.set_fit(front::ImageFit::contain);
+    logo.load("sample.jpeg");
 
     window.show();
     window.run();
