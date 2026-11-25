@@ -10,7 +10,7 @@ struct Player : Hand {
     int bet_{0};
     PlayerStates state_ = PlayerStates::None;
     bool can_bet(int amount) { return balance_ >= static_cast<int>(amount); }
-    bool can_hit() { return (!is_bust() && !is_blackjack()); }
+    bool can_hit() { return (!is_bust() && get_total() != 21); }
 };
 
 } // namespace backend
