@@ -15,9 +15,12 @@ add_library(frontui
     src/window/window.cpp
     src/animation/animation.cpp
     src/resource/resource.cpp
+    src/backend/fltk/backend.cpp
 )
 add_library(FrontUI::frontui ALIAS frontui)
-target_include_directories(frontui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(frontui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(frontui
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
 target_link_libraries(frontui PRIVATE ${FLTK_LIBRARIES})
 target_include_directories(frontui SYSTEM PRIVATE ${FLTK_INCLUDE_DIR})

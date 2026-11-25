@@ -15,7 +15,7 @@ int main() {
     button.set_on_click([&status] { status.set_text("Button clicked!"); });
 
     auto &logo = root.create<front::Image>(front::Size{300, 200});
-    logo.set_fit(front::ImageFit::contain);
+    logo.set_fit(front::ImageFit::stretch);
     logo.load("sample.jpeg");
 
     window.show();

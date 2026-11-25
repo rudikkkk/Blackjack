@@ -1,4 +1,4 @@
-#include <FL/Fl.H>
+#include "../backend/backend.hpp"
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -60,12 +60,12 @@ void AnimationManager::start() {
         return;
     impl_->timer_active = true;
     impl_->last = std::chrono::steady_clock::now();
-    Fl::add_timeout(1.0 / 60.0, timer_cb, this);
+    detail::backend::timer_add(1.0 / 60.0, timer_cb, this);
 }
 
 void AnimationManager::stop() {
     impl_->timer_active = false;
-    Fl::remove_timeout(timer_cb, this);
+    detail::backend::timer_remove(timer_cb, this);
 }
 
 void AnimationManager::timer_cb(void *p) {
@@ -86,6 +86,6 @@ void AnimationManager::tick_manager() {
         impl_->timer_active = false;
         return;
     }
-    Fl::repeat_timeout(1.0 / 60.0, timer_cb, this);
+    detail::backend::timer_repeat(1.0 / 60.0, timer_cb, this);
 }
 } // namespace front
