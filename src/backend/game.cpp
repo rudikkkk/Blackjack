@@ -87,16 +87,18 @@ GameData Game::hit() {
         return error(GameError::WrongState);
     }
     Player &player = players_[current_player_];
+    if (player.can_hit()) {
+        Card card = deck_.get_card();
+        player.add(card);
+    }
     if (!player.can_hit()) {
         if (player.is_blackjack()) {
             player.state_ = PlayerStates::Blackjack;
-        } else {
+        } else if (player.get_total() != 21) {
             player.state_ = PlayerStates::Lose;
         }
         return next_step();
     }
-    Card card = deck_.get_card();
-    player.add(card);
     return get_game_data();
 }
 
