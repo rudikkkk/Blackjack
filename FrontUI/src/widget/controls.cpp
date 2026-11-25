@@ -37,7 +37,7 @@ struct Button::Impl {
 Button::Button(std::string text, Size s)
     : Widget(detail::backend::create_button(0, 0, s.width, s.height,
                                             text.c_str(),
-                                            [this] {
+                                            [this]() {
                                                 if (impl_ && impl_->callback)
                                                     impl_->callback();
                                             })),
@@ -124,6 +124,18 @@ void Image::refresh_image() {
     detail::backend::image_set(native_handle(),
                                impl_->data.empty() ? nullptr : &p, impl_->fit,
                                size().width, size().height);
+}
+
+NumberInput::NumberInput(Size s)
+    : Widget(detail::backend::create_number_input(0, 0, s.width, s.height)) {
+    set_size(s);
+}
+std::string NumberInput::value() const {
+    return detail::backend::number_input_value(native_handle());
+}
+void NumberInput::set_value(const std::string& value) {
+    detail::backend::number_input_set_value(native_handle(), value.c_str());
+    redraw();
 }
 Spacer::Spacer(Size s) : Widget(nullptr) { set_size(s); }
 } // namespace front

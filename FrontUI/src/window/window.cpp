@@ -35,4 +35,7 @@ void Window::hide() { detail::backend::window_show(impl_->native, false); }
 void Window::redraw() { detail::backend::window_redraw(impl_->native); }
 void Window::run() { detail::backend::run(); }
 void Window::close() { hide(); }
+void Window::post(std::function<void()> callback) {
+    detail::backend::post(std::move(callback));
+}
 } // namespace front

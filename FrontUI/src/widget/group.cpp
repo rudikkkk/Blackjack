@@ -42,6 +42,10 @@ void Group::remove(Widget &c) {
     }
     impl_->children.erase(it);
     update_layout();
+    redraw();
+}
+void Group::set_background(Color color) {
+    detail::backend::group_background(impl_->native, color);
 }
 void Group::clear() {
     for (auto &c : impl_->children)
@@ -54,6 +58,7 @@ void Group::clear() {
         }
     impl_->children.clear();
     update_layout();
+    redraw();
 }
 void Group::set_layout(std::unique_ptr<Layout> l) {
     impl_->layout = std::move(l);

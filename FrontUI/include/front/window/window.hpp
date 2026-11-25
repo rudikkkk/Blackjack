@@ -1,6 +1,7 @@
 #pragma once
 #include "../widget/group.hpp"
 #include <memory>
+#include <functional>
 #include <string>
 #include <utility>
 
@@ -24,6 +25,7 @@ class Window {
     void redraw();
     void run();
     void close();
+    void post(std::function<void()> callback);
 
   private:
     struct Impl;

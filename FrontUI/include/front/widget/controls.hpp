@@ -9,7 +9,7 @@ namespace front {
 
 class Label : public Widget {
   public:
-    explicit Label(std::string text, Size size = {140, 28});
+    explicit Label(std::string text, Size size);
     ~Label() override;
     void set_text(std::string);
     const std::string &text() const noexcept;
@@ -23,7 +23,7 @@ class Label : public Widget {
 
 class Button : public Widget {
   public:
-    explicit Button(std::string text, Size size = {120, 32});
+    explicit Button(std::string text, Size size);
     ~Button() override;
     void set_text(std::string);
     const std::string &text() const noexcept;
@@ -56,7 +56,7 @@ enum class ImageFit { original, contain, cover, stretch };
 
 class Image : public Widget {
   public:
-    explicit Image(Size size = {160, 120});
+    explicit Image(Size size);
     ~Image() override;
     void set_size(Size) override;
     bool load(const std::string &);
@@ -67,6 +67,13 @@ class Image : public Widget {
     struct Impl;
     std::unique_ptr<Impl> impl_;
     void refresh_image();
+};
+
+class NumberInput : public Widget {
+  public:
+    explicit NumberInput(Size size);
+    std::string value() const;
+    void set_value(const std::string& value);
 };
 
 class Spacer : public Widget {

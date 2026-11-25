@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <functional>
 #include <front/core/types.hpp>
 #include <functional>
 #include <string>
@@ -19,6 +20,9 @@ Handle create_group(int x, int y, int w, int h);
 Handle create_label(int x, int y, int w, int h, const char *text);
 Handle create_button(int x, int y, int w, int h, const char *text,
                      std::function<void()> callback);
+Handle create_number_input(int x, int y, int w, int h);
+std::string number_input_value(Handle);
+void number_input_set_value(Handle, const char *);
 Handle create_image_widget(int x, int y, int w, int h);
 void destroy_widget(Handle);
 void widget_geometry(Handle, int x, int y, int w, int h);
@@ -28,6 +32,7 @@ void widget_redraw(Handle);
 void group_add(Handle group, Handle child);
 void group_remove(Handle group, Handle child);
 void group_clear(Handle group);
+void group_background(Handle group, Color color);
 void label_text(Handle, const char *);
 void label_color(Handle, Color);
 void label_font_size(Handle, int);
@@ -46,6 +51,7 @@ void window_attach_root(Handle window, Handle group);
 void window_detach_root(Handle window, Handle group);
 void window_destroy(Handle);
 int run();
+void post(std::function<void()> callback);
 void timer_add(double seconds, void (*callback)(void *), void *data);
 void timer_repeat(double seconds, void (*callback)(void *), void *data);
 void timer_remove(void (*callback)(void *), void *data);

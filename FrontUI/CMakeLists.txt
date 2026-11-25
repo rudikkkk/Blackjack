@@ -24,3 +24,6 @@ target_include_directories(frontui
 )
 target_link_libraries(frontui PRIVATE ${FLTK_LIBRARIES})
 target_include_directories(frontui SYSTEM PRIVATE ${FLTK_INCLUDE_DIR})
+if(MSVC)
+    target_compile_options(frontui PRIVATE /utf-8)
+endif()

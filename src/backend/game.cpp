@@ -70,11 +70,11 @@ GameData Game::do_bet(int amount) {
     }
     Player &player = players_[current_player_];
 
-    if (player.bet_ < MIN_BET) {
+    if (amount < MIN_BET) {
         return error(GameError::BetOutOfRange);
     }
 
-    if (player.can_bet(amount)) {
+    if (!player.can_bet(amount)) {
         return error(GameError::NotEnoughMoney);
     }
     player.bet_ = amount;

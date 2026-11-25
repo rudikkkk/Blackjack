@@ -1,5 +1,6 @@
 #include "../backend.hpp"
 #include <FL/Fl.H>
+#include <FL/Fl_Int_Input.H>
 #include <FL/Fl_BMP_Image.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
@@ -47,6 +48,14 @@ class OwnedImageBox : public Fl_Box {
             return;
         }
         pixels_ = p->pixels;
+        image_owner_ = std::move(make_im(p, fit, tw, th));
+        image(image_owner_.get());
+        redraw();
+    }
+
+  private:
+    std::unique_ptr<Fl_RGB_Image> make_im(const ImagePixels *p, ImageFit fit,
+                                          int tw, int th) {
         auto im = std::make_unique<Fl_RGB_Image>(pixels_.data(), p->width,
                                                  p->height, p->channels);
         if (fit == ImageFit::contain) {
@@ -54,14 +63,16 @@ class OwnedImageBox : public Fl_Box {
                                 float(std::max(1, th)) / p->height);
             im->scale(std::max(1, int(p->width * sc)),
                       std::max(1, int(p->height * sc)), 0, 1);
-        } else if (fit == ImageFit::stretch)
+        } else if (fit == ImageFit::stretch) {
             im->scale(std::max(1, tw), std::max(1, th), 0, 1);
-        image_owner_ = std::move(im);
-        image(image_owner_.get());
-        redraw();
+        } else if (fit == ImageFit::cover) {
+            float sc = std::max(float(std::max(1, tw)) / p->width,
+                                float(std::max(1, th)) / p->height);
+            im->scale(std::max(1, int(p->width * sc)),
+                      std::max(1, int(p->height * sc)), 0, 1);
+        }
+        return im;
     }
-
-  private:
     std::vector<unsigned char> pixels_;
     std::unique_ptr<Fl_RGB_Image> image_owner_;
 };
@@ -86,6 +97,17 @@ Handle create_button(int x, int y, int w, int h, const char *t,
                    void *) { static_cast<CallbackButton *>(w)->invoke(); },
                 nullptr);
     return b;
+}
+Handle create_number_input(int x, int y, int w, int h) {
+    return new Fl_Int_Input(x, y, w, h);
+}
+std::string number_input_value(Handle h) {
+    if (!h) return {};
+    const char* value = static_cast<Fl_Input*>(W(h))->value();
+    return value ? value : "";
+}
+void number_input_set_value(Handle h, const char* value) {
+    if (h) static_cast<Fl_Input*>(W(h))->value(value ? value : "");
 }
 Handle create_image_widget(int x, int y, int w, int h) {
     auto *b = new OwnedImageBox(x, y, w, h);
@@ -129,9 +151,16 @@ void group_clear(Handle g) {
     if (g)
         G(g)->clear();
 }
+void group_background(Handle g, Color color) {
+    if (g) {
+        G(g)->box(FL_FLAT_BOX);
+        G(g)->color(to_fl(color));
+        G(g)->redraw();
+    }
+}
 void label_text(Handle h, const char *t) {
     if (h)
-        W(h)->label(t);
+        W(h)->copy_label(t);
 }
 void label_color(Handle h, Color c) {
     if (h)
@@ -183,11 +212,15 @@ bool image_load(const std::string &path, ImagePixels &out) {
     return true;
 }
 Handle create_window(int w, int h, const char *t) {
-    return new Fl_Window(w, h, t);
+    auto *window = new Fl_Window(w, h);
+    // Fl_Widget::label() stores the pointer; the constructor argument may
+    // refer to a temporary std::string owned by Window. Copy the text.
+    window->copy_label(t ? t : "");
+    return window;
 }
 void window_title(Handle h, const char *t) {
     if (h)
-        Win(h)->label(t);
+        Win(h)->copy_label(t ? t : "");
 }
 void window_size(Handle h, int w, int he) {
     if (h)
@@ -222,6 +255,15 @@ void window_detach_root(Handle w, Handle g) {
 }
 void window_destroy(Handle h) { delete Win(h); }
 int run() { return Fl::run(); }
+void post(std::function<void()> callback) {
+    auto *task = new std::function<void()>(std::move(callback));
+    Fl::add_timeout(0.0, [](void *data) {
+        std::unique_ptr<std::function<void()>> task_ptr(
+            static_cast<std::function<void()> *>(data));
+        if (*task_ptr)
+            (*task_ptr)();
+    }, task);
+}
 void timer_add(double s, void (*cb)(void *), void *d) {
     Fl::add_timeout(s, cb, d);
 }

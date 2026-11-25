@@ -2,13 +2,12 @@
 #include "../layout/layout.hpp"
 #include "widget.hpp"
 #include <memory>
-#include <utility>
 #include <vector>
 
 namespace front {
 class Group : public Widget {
   public:
-    explicit Group(Size size = {100, 100});
+    explicit Group(Size size);
     ~Group() override;
     Widget &add(std::unique_ptr<Widget>);
     template <class T, class... Args> T &create(Args &&...args) {
@@ -19,6 +18,7 @@ class Group : public Widget {
     }
     void remove(Widget &);
     void clear();
+    void set_background(Color color);
     void set_layout(std::unique_ptr<Layout>);
     void update_layout();
     const std::vector<std::unique_ptr<Widget>> &children() const noexcept;

@@ -1,6 +1,5 @@
 #pragma once
 #include "../core/types.hpp"
-#include <algorithm>
 namespace front {
 
 class Group;
