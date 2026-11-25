@@ -169,13 +169,12 @@ void Game::count_results() {
         default:
             break;
         }
-        p.bet_ = 0;
     }
 }
 
 GameData Game::next_round() {
     if (state_ != States::End) {
-        return get_game_data();
+        return error(GameError::WrongState);
     }
     dealer_.clear();
     for (auto &p : players_) {
