@@ -70,11 +70,11 @@ GameData Game::do_bet(int amount) {
     }
     Player &player = players_[current_player_];
 
-    if (player.bet_ < MIN_BET) {
+    if (amount < MIN_BET) {
         return error(GameError::BetOutOfRange);
     }
 
-    if (player.can_bet(amount)) {
+    if (!player.can_bet(amount)) {
         return error(GameError::NotEnoughMoney);
     }
     player.bet_ = amount;
@@ -169,13 +169,12 @@ void Game::count_results() {
         default:
             break;
         }
-        p.bet_ = 0;
     }
 }
 
 GameData Game::next_round() {
     if (state_ != States::End) {
-        return get_game_data();
+        return error(GameError::WrongState);
     }
     dealer_.clear();
     for (auto &p : players_) {
