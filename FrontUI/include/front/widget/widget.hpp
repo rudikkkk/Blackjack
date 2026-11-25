@@ -7,6 +7,7 @@ class Group;
 class Label;
 class Button;
 class Image;
+class NumberInput;
 class Window;
 
 class Widget {
@@ -43,5 +44,7 @@ class Widget {
     friend class Label;
     friend class Button;
     friend class Image;
+    friend class NumberInput;
+class NumberInput;
 };
 } // namespace front
